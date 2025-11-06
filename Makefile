@@ -1,7 +1,13 @@
-init: docker-down-clear docker-pull docker-build docker-up docker-wait docker-migrate docker-seed
+init: docker-down-clear \
+	docker-pull \
+ 	docker-build \
+ 	 docker-up \
+ 	  docker-composer-install \
+ 	   docker-wait \
+ 	    docker-migrate \
+ 	     docker-seed
 up: docker-up
 down: docker-down
-restart: down-up
 
 docker-up:
 	docker-compose up -d
@@ -17,6 +23,9 @@ docker-pull:
 
 docker-build:
 	docker-compose build --pull --progress=plain
+
+docker-composer-install:
+	docker-compose run --rm -w /app/src api-php-cli composer install
 
 docker-wait:
 	@echo "Waiting for PostgreSQL to be ready..."

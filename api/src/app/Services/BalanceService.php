@@ -87,7 +87,17 @@ class BalanceService
         });
     }
 
-    public function transfer(int $fromUserId, int $toUserId, float $amount, string $comment = null): array
+    /**
+     * Перевод между юзерами
+     *
+     * @param int $fromUserId
+     * @param int $toUserId
+     * @param float $amount
+     * @param string|null $comment
+     * @return array
+     * @throws Exception
+     */
+    public function transfer(int $fromUserId, int $toUserId, float $amount, string|null $comment): array
     {
         $this->validateAmount($amount);
         if ($fromUserId === $toUserId) {

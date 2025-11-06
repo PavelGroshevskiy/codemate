@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: api
+      dockerfile: docker/dev/nginx/Dockerfile
+    volumes:
+      - ./api:/app
+    ports:
+      - "8080:80"
+    depends_on:
+      - api-php-fpm
+  api-php-fpm:
+    build:
+      context: api
+      dockerfile: docker/dev/php-fpm/Dockerfile
+    volumes: 
+      - ./api:/app
+  api-php-cli:
+    build:
+      context: api
+      dockerfile: docker/dev/php-cli/Dockerfile
+    volumes:
+      - ./api:/app
+    depends_on:
+      - api-postgres
+  api-postgres:
+    image: postgres:16.9-alpine
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=app
+    volumes:
+      - api-postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  api-postgres:
